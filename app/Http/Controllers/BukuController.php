@@ -30,7 +30,7 @@ class BukuController extends Controller
 
         Buku::create($validated);
 
-        return redirect()->route('buku.index')->with('success', 'Buku berhasil ditambahkan');
+        return redirect(roleRoute('buku.index'))->with('success', 'Buku berhasil ditambahkan');
     }
 
     public function show(Buku $buku)
@@ -55,12 +55,12 @@ class BukuController extends Controller
 
         $buku->update($validated);
 
-        return redirect()->route('buku.index')->with('success', 'Buku berhasil diupdate');
+        return redirect(roleRoute('buku.index'))->with('success', 'Buku berhasil diupdate');
     }
 
     public function destroy(Buku $buku)
     {
         $buku->delete();
-        return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus');
+        return redirect(roleRoute('buku.index'))->with('success', 'Buku berhasil dihapus');
     }
 }

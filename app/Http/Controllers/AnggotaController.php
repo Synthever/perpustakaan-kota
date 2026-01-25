@@ -51,7 +51,7 @@ class AnggotaController extends Controller
             'id_anggota' => $anggota->id_anggota,
         ]);
 
-        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil ditambahkan');
+        return redirect(roleRoute('anggota.index'))->with('success', 'Anggota berhasil ditambahkan');
     }
 
     public function show(Anggota $anggotum)
@@ -81,7 +81,7 @@ class AnggotaController extends Controller
             $anggotum->user->update(['name' => $validated['nama_anggota']]);
         }
 
-        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil diupdate');
+        return redirect(roleRoute('anggota.index'))->with('success', 'Anggota berhasil diupdate');
     }
 
     public function destroy(Anggota $anggotum)
@@ -92,6 +92,6 @@ class AnggotaController extends Controller
         }
         
         $anggotum->delete();
-        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil dihapus');
+        return redirect(roleRoute('anggota.index'))->with('success', 'Anggota berhasil dihapus');
     }
 }
