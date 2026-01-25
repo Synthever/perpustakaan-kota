@@ -26,11 +26,28 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
         
+        // CRUD Anggota
+        Route::resource('anggota', AnggotaController::class);
+        
+        // CRUD Buku
+        Route::resource('buku', BukuController::class);
+        
+        // CRUD Peminjaman
+        Route::resource('peminjaman', PeminjamanController::class);
+        
+        // CRUD Users
+        Route::resource('users', UserController::class);
     });
     
     // Staff routes
     Route::middleware(['role:staff'])->prefix('staff')->name('staff.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'staff'])->name('dashboard');
+        
+        // Kelola Anggota
+        Route::resource('anggota', AnggotaController::class);
+        
+        // Kelola Peminjaman
+        Route::resource('peminjaman', PeminjamanController::class);
     });
     
     // Staff Stock routes
@@ -44,6 +61,10 @@ Route::middleware(['auth'])->group(function () {
     // Anggota routes
     Route::middleware(['role:anggota'])->prefix('anggota')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'anggota'])->name('anggota.dashboard');
+        
+        // Riwayat Peminjaman
+        Route::get('peminjaman', [PeminjamanController::class, 'index'])->name('anggota.peminjaman.index');
+        Route::get('peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])->name('anggota.peminjaman.show');
     });
 });
 
