@@ -6,9 +6,27 @@
 <div class="row mb-4">
     <div class="col">
         <h2>Dashboard Anggota</h2>
-        <p class="text-muted">Selamat datang, {{ auth()->user()->name }}</p>
+        <p class="text-muted">Selamat datang, {{ auth()->user()->username }}</p>
     </div>
 </div>
+
+@if(auth()->user()->anggota && auth()->user()->anggota->status_anggota === 'Pending')
+<div class="row mb-4">
+    <div class="col">
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+            <div class="flex-grow-1">
+                <h5 class="alert-heading mb-2">Profil Belum Lengkap</h5>
+                <p class="mb-2">Untuk dapat melakukan peminjaman dan booking buku, Anda harus melengkapi profil terlebih dahulu dengan mengisi: Nama Lengkap, No. Telepon, Alamat, dan Pekerjaan.</p>
+                <a href="{{ route('profile.complete') }}" class="btn btn-warning">
+                    <i class="bi bi-person-badge me-2"></i>
+                    Lengkapi Profil Sekarang
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 <div class="row mt-4">
     <div class="col-md-12">

@@ -15,7 +15,7 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label for="id_anggota" class="form-label">Anggota <span class="text-danger">*</span></label>
-                        <select class="form-select @error('id_anggota') is-invalid @enderror" 
+                        <select class="form-select select2-anggota @error('id_anggota') is-invalid @enderror" 
                                 id="id_anggota" name="id_anggota" required>
                             <option value="">Pilih Anggota</option>
                             @foreach($anggota as $a)
@@ -58,7 +58,7 @@
                 <div class="row mb-3 buku-item">
                     <div class="col-md-8">
                         <label class="form-label">Buku <span class="text-danger">*</span></label>
-                        <select class="form-select" name="buku[0][id_buku]" required>
+                        <select class="form-select select2-buku" name="buku[0][id_buku]" required>
                             <option value="">Pilih Buku</option>
                             @foreach($buku as $b)
                                 <option value="{{ $b->id_buku }}">
@@ -104,6 +104,27 @@
 <script>
 let bukuIndex = 1;
 
+// Initialize Select2 untuk dropdown yang sudah ada
+$(document).ready(function() {
+    initializeSelect2();
+});
+
+function initializeSelect2() {
+    $('.select2-anggota').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Cari anggota...',
+        allowClear: true,
+        width: '100%'
+    });
+    
+    $('.select2-buku').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Cari buku...',
+        allowClear: true,
+        width: '100%'
+    });
+}
+
 document.getElementById('addBuku').addEventListener('click', function() {
     const container = document.getElementById('bukuContainer');
     const bukuOptions = `@foreach($buku as $b)<option value="{{ $b->id_buku }}">{{ $b->judul_buku }} (Stok: {{ $b->stok }})</option>@endforeach`;
@@ -111,7 +132,7 @@ document.getElementById('addBuku').addEventListener('click', function() {
     const newRow = `
         <div class="row mb-3 buku-item">
             <div class="col-md-8">
-                <select class="form-select" name="buku[${bukuIndex}][id_buku]" required>
+                <select class="form-select select2-buku" name="buku[${bukuIndex}][id_buku]" required>
                     <option value="">Pilih Buku</option>
                     ${bukuOptions}
                 </select>
@@ -129,12 +150,17 @@ document.getElementById('addBuku').addEventListener('click', function() {
     
     container.insertAdjacentHTML('beforeend', newRow);
     bukuIndex++;
+    
+    // Initialize Select2 untuk dropdown baru yang ditambahkan
+    initializeSelect2();
     updateRemoveButtons();
 });
 
 document.getElementById('bukuContainer').addEventListener('click', function(e) {
     if (e.target.classList.contains('remove-buku') || e.target.parentElement.classList.contains('remove-buku')) {
         const bukuItem = e.target.closest('.buku-item');
+        // Hancurkan instance Select2 sebelum menghapus element
+        $(bukuItem).find('.select2-buku').select2('destroy');
         bukuItem.remove();
         updateRemoveButtons();
     }

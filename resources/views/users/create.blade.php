@@ -5,14 +5,14 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="page-title mb-0"><i class="bi bi-person-plus-fill me-2"></i>Tambah User Baru</h2>
-    <a href="{{ route('users.index') }}" class="btn btn-secondary">
+    <a href="{{ roleRoute('users.index') }}" class="btn btn-secondary">
         <i class="bi bi-arrow-left me-2"></i>Kembali
     </a>
 </div>
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ roleRoute('users.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="username" class="form-label fw-semibold">Username <span class="text-danger">*</span></label>
@@ -50,7 +50,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save me-2"></i>Simpan
                 </button>
-                <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                <a href="{{ roleRoute('users.index') }}" class="btn btn-secondary">
                     <i class="bi bi-x-circle me-2"></i>Batal
                 </a>
             </div>

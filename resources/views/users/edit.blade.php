@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('users.update', $user->id_user) }}" method="POST">
+        <form action="{{ roleRoute('users.update', $user->id_user) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
@@ -50,7 +50,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Update
                 </button>
-                <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                <a href="{{ roleRoute('users.index') }}" class="btn btn-secondary">
                     <i class="bi bi-x-circle"></i> Batal
                 </a>
             </div>

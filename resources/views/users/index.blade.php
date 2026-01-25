@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Data User</h2>
-    <a href="{{ route('users.create') }}" class="btn btn-primary">
+    <a href="{{ roleRoute('users.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Tambah User
     </a>
 </div>
@@ -34,11 +34,11 @@
                     </td>
                     <td>{{ $item->anggota ? $item->anggota->nama_anggota : '-' }}</td>
                     <td>
-                        <a href="{{ route('users.edit', $item->id_user) }}" class="btn btn-sm btn-warning">
+                        <a href="{{ roleRoute('users.edit', $item->id_user) }}" class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil"></i>
                         </a>
                         @if($item->id_user != auth()->user()->id_user)
-                        <form action="{{ route('users.destroy', $item->id_user) }}" method="POST" class="d-inline" 
+                        <form action="{{ roleRoute('users.destroy', $item->id_user) }}" method="POST" class="d-inline" 
                               onsubmit="return confirm('Yakin ingin menghapus?')">
                             @csrf
                             @method('DELETE')

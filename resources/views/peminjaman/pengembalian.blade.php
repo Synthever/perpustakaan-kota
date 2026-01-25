@@ -39,7 +39,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('peminjaman.kembali', $peminjaman->id_peminjaman) }}" method="POST">
+        <form action="{{ roleRoute('peminjaman.kembali', $peminjaman->id_peminjaman) }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="tanggal_kembali" class="form-label">Tanggal Pengembalian <span class="text-danger">*</span></label>
@@ -59,7 +59,7 @@
                 <button type="submit" class="btn btn-success">
                     <i class="bi bi-check-circle"></i> Proses Pengembalian
                 </button>
-                <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">
+                <a href="{{ roleRoute('peminjaman.index') }}" class="btn btn-secondary">
                     <i class="bi bi-x-circle"></i> Batal
                 </a>
             </div>

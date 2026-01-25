@@ -15,9 +15,14 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
-        $peminjaman = Peminjaman::with(['anggota', 'detailPeminjaman.buku'])
-            ->orderBy('id_peminjaman', 'desc')
-            ->paginate(10);
+        $query = Peminjaman::with(['anggota', 'detailPeminjaman.buku']);
+        
+        // Jika role anggota, hanya tampilkan peminjaman miliknya sendiri
+        if (auth()->user()->role === 'anggota') {
+            $query->where('id_anggota', auth()->user()->id_anggota);
+        }
+        
+        $peminjaman = $query->orderBy('id_peminjaman', 'desc')->paginate(10);
         return view('peminjaman.index', compact('peminjaman'));
     }
 
@@ -71,7 +76,7 @@ class PeminjamanController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil dibuat');
+            return redirect(roleRoute('peminjaman.index'))->with('success', 'Peminjaman berhasil dibuat');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
@@ -123,7 +128,7 @@ class PeminjamanController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('peminjaman.index')->with('success', 'Pengembalian berhasil diproses');
+            return redirect(roleRoute('peminjaman.index'))->with('success', 'Pengembalian berhasil diproses');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
@@ -133,6 +138,6 @@ class PeminjamanController extends Controller
     public function destroy(Peminjaman $peminjaman)
     {
         $peminjaman->delete();
-        return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman berhasil dihapus');
+        return redirect(roleRoute('peminjaman.index'))->with('success', 'Data peminjaman berhasil dihapus');
     }
 }

@@ -87,7 +87,7 @@
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="{{ route('users.create') }}" class="btn btn-outline-info w-100 mb-2">
+                        <a href="{{ roleRoute('users.create') }}" class="btn btn-outline-info w-100 mb-2">
                             <i class="bi bi-person-gear"></i> Tambah User
                         </a>
                     </div>

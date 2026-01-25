@@ -17,6 +17,7 @@ class Anggota extends Model
         'nama_anggota',
         'alamat',
         'no_telp',
+        'pekerjaan',
         'tanggal_daftar',
         'status_anggota'
     ];

@@ -12,12 +12,20 @@ use App\Http\Controllers\UserController;
 
 // Public routes
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('landing');
+})->name('home');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Profile completion routes (authenticated but profile not complete)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/complete', [AuthController::class, 'showCompleteProfile'])->name('profile.complete');
+    Route::post('/profile/complete', [AuthController::class, 'storeCompleteProfile'])->name('profile.complete.store');
+});
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
@@ -35,6 +43,14 @@ Route::middleware(['auth'])->group(function () {
         // CRUD Peminjaman
         Route::resource('peminjaman', PeminjamanController::class);
         
+        // CRUD Booking
+        Route::resource('booking', BookingController::class)->except(['create', 'store']);
+        Route::post('booking/{booking}/status', [BookingController::class, 'updateStatus'])->name('booking.updateStatus');
+        
+        // CRUD Denda
+        Route::resource('denda', DendaController::class)->only(['index', 'show', 'destroy']);
+        Route::post('denda/{denda}/bayar', [DendaController::class, 'bayar'])->name('denda.bayar');
+        
         // CRUD Users
         Route::resource('users', UserController::class);
     });
@@ -48,6 +64,11 @@ Route::middleware(['auth'])->group(function () {
         
         // Kelola Peminjaman
         Route::resource('peminjaman', PeminjamanController::class);
+        
+        // Kelola Denda
+        Route::get('denda', [DendaController::class, 'index'])->name('denda.index');
+        Route::get('denda/{denda}', [DendaController::class, 'show'])->name('denda.show');
+        Route::post('denda/{denda}/bayar', [DendaController::class, 'bayar'])->name('denda.bayar');
     });
     
     // Staff Stock routes
@@ -62,9 +83,22 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:anggota'])->prefix('anggota')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'anggota'])->name('anggota.dashboard');
         
-        // Riwayat Peminjaman
-        Route::get('peminjaman', [PeminjamanController::class, 'index'])->name('anggota.peminjaman.index');
-        Route::get('peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])->name('anggota.peminjaman.show');
+        // Booking - memerlukan profil lengkap
+        Route::middleware(['profile.complete'])->group(function () {
+            Route::get('booking', [BookingController::class, 'index'])->name('anggota.booking.index');
+            Route::get('booking/create', [BookingController::class, 'create'])->name('anggota.booking.create');
+            Route::post('booking', [BookingController::class, 'store'])->name('anggota.booking.store');
+            Route::get('booking/{booking}', [BookingController::class, 'show'])->name('anggota.booking.show');
+            Route::delete('booking/{booking}', [BookingController::class, 'destroy'])->name('anggota.booking.destroy');
+            
+            // Riwayat Peminjaman - memerlukan profil lengkap
+            Route::get('peminjaman', [PeminjamanController::class, 'index'])->name('anggota.peminjaman.index');
+            Route::get('peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])->name('anggota.peminjaman.show');
+            
+            // Denda - memerlukan profil lengkap
+            Route::get('denda', [DendaController::class, 'index'])->name('anggota.denda.index');
+            Route::get('denda/{denda}', [DendaController::class, 'show'])->name('anggota.denda.show');
+        });
     });
 });
 

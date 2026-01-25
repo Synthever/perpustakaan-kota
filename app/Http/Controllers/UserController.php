@@ -34,7 +34,7 @@ class UserController extends Controller
             'id_anggota' => null,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+        return redirect(roleRoute('users.index'))->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit(User $user)
@@ -60,7 +60,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil diupdate');
+        return redirect(roleRoute('users.index'))->with('success', 'User berhasil diupdate');
     }
 
     public function destroy(User $user)
@@ -71,6 +71,6 @@ class UserController extends Controller
         }
 
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
+        return redirect(roleRoute('users.index'))->with('success', 'User berhasil dihapus');
     }
 }
