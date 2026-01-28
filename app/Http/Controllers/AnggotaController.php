@@ -28,7 +28,7 @@ class AnggotaController extends Controller
             'no_telp' => 'required',
             'tanggal_daftar' => 'required|date',
             'status_anggota' => 'required|in:Aktif,Nonaktif',
-            'username' => 'required|unique:users,username',
+            'username' => 'required|unique:user,username',
             'password' => 'required|min:6',
         ]);
 
@@ -90,7 +90,7 @@ class AnggotaController extends Controller
         if ($anggotum->user) {
             $anggotum->user->delete();
         }
-        
+
         $anggotum->delete();
         return redirect(roleRoute('anggota.index'))->with('success', 'Anggota berhasil dihapus');
     }
